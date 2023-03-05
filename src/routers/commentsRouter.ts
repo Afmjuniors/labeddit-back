@@ -27,7 +27,6 @@ const commentsController = new CommentsController(
         new UserDatabase(),
         new PostDatabase(),
         new ReactionCommentDatabase(),
-        new ReactionDatabase(),
         new IdGenerator(),
         new TokenManager()
     )

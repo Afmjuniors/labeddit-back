@@ -19,7 +19,6 @@ export class CommentBusiness {
         private userDatabase: UserDatabase,
         private postDatabase: PostDatabase,
         private reactionCommentDatabase: ReactionCommentDatabase,
-        private reactionDatabase: ReactionDatabase,
         private idGenerator: IdGenerator,
         private tokenManager: TokenManager
     ) { }
