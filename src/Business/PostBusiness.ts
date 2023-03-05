@@ -7,8 +7,8 @@ import { BadRequestError } from "../error/BadRequestError";
 import { NotFoundError } from "../error/NoTFoundError";
 import { Post } from "../models/Post";
 import { IdGenerator } from "../services/IdGenerator";
-import { TokenManager, TokenPayload } from "../services/TokenManager";
-import { PostDB, PostEditDB, Reaction, Roles } from "../types";
+import { TokenManager } from "../services/TokenManager";
+import { PostDB, PostEditDB, Reaction, Roles, TokenPayload } from "../types";
 
 export class PostBusiness {
     constructor(
@@ -22,7 +22,7 @@ export class PostBusiness {
 
     public getPosts = async (input: GetPostsInputDTO): Promise<PostsOutputDTO[]> => {
         const {user, token} = input
-        const payload = this.tokenManager.getPyaload(token)
+        const payload = this.tokenManager.getPayload(token)
 
         if (payload === null) {
             throw new BadRequestError("Usuario não logado")
@@ -69,7 +69,7 @@ export class PostBusiness {
     public createPost = async (input: CreatePostInputDTO): Promise<CreatePostOutputDTO> => {
 
         const { content, token } = input
-        const payload = this.tokenManager.getPyaload(token)
+        const payload = this.tokenManager.getPayload(token)
 
         if (payload === null) {
             throw new BadRequestError("Usuario não logado")
@@ -100,7 +100,7 @@ export class PostBusiness {
         if (!user) {
             throw new NotFoundError("Erro ao procurar Id do criador do post")
         }
-        const payload = this.tokenManager.getPyaload(input.data.token)
+        const payload = this.tokenManager.getPayload(input.data.token)
 
         if (payload === null) {
             throw new BadRequestError("Token invalido")
@@ -138,7 +138,7 @@ export class PostBusiness {
     public deletePost = async (input: DeletePostInputDTO) => {
 
         const {token,id} = input
-        const payload = this.tokenManager.getPyaload(token)
+        const payload = this.tokenManager.getPayload(token)
         if (payload === null) {
             throw new BadRequestError("Usuario não logado")
         }
@@ -162,7 +162,7 @@ export class PostBusiness {
         const {like,idPost,token} = input
         const likeStr = like ? "like" : "dislike"
 
-        const payload = this.tokenManager.getPyaload(token)
+        const payload = this.tokenManager.getPayload(token)
 
         if (payload === null) {
             throw new BadRequestError("Usuario não logado")

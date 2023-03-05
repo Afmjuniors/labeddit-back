@@ -1,9 +1,8 @@
 import { nowDate } from "../../../src/constants/patterns"
 import { BaseDatabase } from "../../../src/database/BaseDatabase"
 import { PostDB, PostEditDB } from "../../../src/types"
-import { ReactionDatabase } from "./ReactionDatabaseMock"
 
-export class PostDatabase extends BaseDatabase {
+export class PostDatabaseMock extends BaseDatabase {
     public static TABLE_POST = "posts"
 
     public getAllPosts = async (): Promise<PostDB[]> => {

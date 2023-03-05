@@ -2,7 +2,7 @@ import { BaseDatabase } from "../../../src/database/BaseDatabase"
 import { Reaction } from "../../../src/types"
 
 
-export class ReactionDatabase extends BaseDatabase{
+export class ReactionDatabaseMock extends BaseDatabase{
     public static TABLE_REACTION = "likes_dislikes"
     public static TABLE_REACTION_COMMENTS = 'likes_dislikes_comments'
 

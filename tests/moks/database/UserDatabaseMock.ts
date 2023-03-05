@@ -2,7 +2,7 @@ import { Roles, UserDB, UserToEditDB } from "../../../src/types"
 import { BaseDatabase } from "../../../src/database/BaseDatabase"
 import { nowDate } from "../../../src/constants/patterns"
 
-export class UserDatabase extends BaseDatabase {
+export class UserDatabaseMock extends BaseDatabase {
     public static TABLE_USER = "users"
 
 

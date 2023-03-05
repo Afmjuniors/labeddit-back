@@ -2,7 +2,7 @@ import { nowDate } from "../../../src/constants/patterns"
 import { BaseDatabase } from "../../../src/database/BaseDatabase"
 import { CommentDB, CommentEditDB } from "../../../src/types"
 
-export class CommentDatabase extends BaseDatabase{
+export class CommentDatabaseMock extends BaseDatabase{
     public static TABLE_COMMENT ="comments"
 
     public getAllComments = async (id:string):Promise<CommentDB[]> =>{
