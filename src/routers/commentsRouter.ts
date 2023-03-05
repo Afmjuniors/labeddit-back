@@ -7,6 +7,7 @@ import { PostController } from "../controller/PostController"
 import { UserControler } from "../controller/UserController"
 import { CommentDatabase } from "../database/CommentDatabase"
 import { PostDatabase } from "../database/PostDatabase"
+import { ReactionCommentDatabase } from "../database/ReactionCommentDatabase"
 import { ReactionDatabase } from "../database/ReactionDatabase"
 import { UserDatabase } from "../database/UserDatabase"
 import { CommentsDTO } from "../dto/CommentDTO"
@@ -24,6 +25,8 @@ const commentsController = new CommentsController(
         new CommentsDTO(),
         new CommentDatabase(),
         new UserDatabase(),
+        new PostDatabase(),
+        new ReactionCommentDatabase(),
         new ReactionDatabase(),
         new IdGenerator(),
         new TokenManager()

@@ -1,13 +1,16 @@
-import { CommentDB, CommentEditDB } from "../types";
+import { BadRequestError } from "../error/BadRequestError";
+import { CommentDB, CommentEditDB, PostDB } from "../types";
 import { BaseDatabase } from "./BaseDatabase";
+import { PostDatabase } from "./PostDatabase";
 import { ReactionDatabase } from "./ReactionDatabase";
 
 export class CommentDatabase extends BaseDatabase{
     public static TABLE_COMMENT ="comments"
 
-    public getAllComments = async ():Promise<CommentDB[]> =>{
+    public getAllComments = async (id:string):Promise<CommentDB[]> =>{
         
         return await BaseDatabase.connection(CommentDatabase.TABLE_COMMENT)
+        .where({post_id:id})
     }
     public getCommentByUserId =async (idUser:string) :Promise<CommentDB[]>=> {
 
@@ -21,6 +24,19 @@ export class CommentDatabase extends BaseDatabase{
         .connection(CommentDatabase.TABLE_COMMENT)
         .where({id})
         return comment
+    }
+    public handleCommentsChange = async(commentId:string,value:number):Promise<void> =>{
+     const [comment]:CommentDB[] = await BaseDatabase
+     .connection(CommentDatabase.TABLE_COMMENT)
+     .where({id:commentId})
+     const [post] :PostDB[] =  await BaseDatabase
+     .connection(PostDatabase.TABLE_POST)
+     .where({id:comment.post_id})
+    const number = post.comments+value
+    await BaseDatabase
+     .connection(PostDatabase.TABLE_POST)
+     .update({comment:number})
+     .where({id:comment.post_id})
     }
     public insertComment =async (comment:CommentDB):Promise<void> => {
         await BaseDatabase

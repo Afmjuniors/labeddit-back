@@ -52,6 +52,7 @@ export class PostBusiness {
                 post.content,
                 post.likes,
                 post.dislikes,
+                post.comments,
                 post.created_at,
                 post.updated_at,
                 user
@@ -76,6 +77,7 @@ export class PostBusiness {
         const post = new Post(
             this.idGenerator.generate(),
             content,
+            0,
             0,
             0,
             nowDate,
@@ -113,6 +115,7 @@ export class PostBusiness {
             post.content,
             post.likes,
             post.dislikes,
+            post.comments,
             post.created_at,
             post.updated_at,
             user)
@@ -183,6 +186,7 @@ export class PostBusiness {
             postDB.content,
             postDB.likes,
             postDB.dislikes,
+            postDB.comments,
             postDB.created_at,
             postDB.updated_at,
             userOutput

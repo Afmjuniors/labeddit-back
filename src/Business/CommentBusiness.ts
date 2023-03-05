@@ -1,44 +1,43 @@
 import { nowDate } from "../constants/patterns";
+import { CommentDatabase } from "../database/CommentDatabase";
 import { PostDatabase } from "../database/PostDatabase";
+import { ReactionCommentDatabase } from "../database/ReactionCommentDatabase";
 import { ReactionDatabase } from "../database/ReactionDatabase";
 import { UserDatabase } from "../database/UserDatabase";
-import { PostsOutputDTO, PostsDTO, CreatePostOutputDTO, PostReactionOutputDTO, CreatePostInputDTO, DeletePostInputDTO, PostReactionInputDTO, GetPostsInputDTO } from "../dto/PostDTO";
+import { CommentsOutputDTO, CommentsDTO, CreateCommentOutputDTO, CommentReactionOutputDTO, CreateCommentInputDTO, DeleteCommentInputDTO, CommentReactionInputDTO, GetCommentsInputDTO } from "../dto/CommentDTO";
 import { BadRequestError } from "../error/BadRequestError";
 import { NotFoundError } from "../error/NoTFoundError";
-import { Post } from "../models/Post";
+import { Comment } from "../models/Comment";
 import { IdGenerator } from "../services/IdGenerator";
 import { TokenManager, TokenPayload } from "../services/TokenManager";
-import { PostDB, PostEditDB, Reaction, Roles } from "../types";
+import { CommentDB, CommentEditDB, PostEditDB, Reaction, ReactionComment, Roles } from "../types";
 
-export class PostBusiness {
+export class CommentBusiness {
     constructor(
-        private postDTO: PostsDTO,
-        private postDatabase: PostDatabase,
+        private commentDTO: CommentsDTO,
+        private commentDatabase: CommentDatabase,
         private userDatabase: UserDatabase,
+        private postDatabase: PostDatabase,
+        private reactionCommentDatabase: ReactionCommentDatabase,
         private reactionDatabase: ReactionDatabase,
         private idGenerator: IdGenerator,
         private tokenManager: TokenManager
     ) { }
 
-    public getPosts = async (input: GetPostsInputDTO): Promise<PostsOutputDTO[]> => {
-        const {user, token} = input
+    public getComments = async (input: GetCommentsInputDTO): Promise<CommentsOutputDTO[]> => {
+        const {postId, token} = input
         const payload = this.tokenManager.getPyaload(token)
 
         if (payload === null) {
             throw new BadRequestError("Usuario não logado")
         }
-        console.log(user)
-        let postsDB
-        if (!user) {
-            const posts: PostDB[] = await this.postDatabase.getAllPosts()
-            postsDB = posts
-        } else {
-            const posts: PostDB[] = await this.postDatabase.getPostByUserId(user)
-            postsDB = posts
-        }
+
+        const commentsDB: CommentDB[] = await this.commentDatabase.getAllComments(postId)
+
         const users = await this.userDatabase.getAllUsers()
-        const posts = postsDB.map((post) => {
-            const userFind = users.find((user) => user.id === post.creator_id)
+
+        const comments = commentsDB.map((comment) => {
+            const userFind = users.find((user) => user.id === comment.creator_id)
             if (!userFind) {
                 throw new Error("Usuario não encontrado");
             }
@@ -47,56 +46,66 @@ export class PostBusiness {
                 name: userFind.name,
                 role: userFind.role
             }
-            const postInst = new Post(
-                post.id,
-                post.content,
-                post.likes,
-                post.dislikes,
-                post.created_at,
-                post.updated_at,
+            const commentInst = new Comment(
+                comment.id,
+                comment.content,
+                postId,
+                comment.likes,
+                comment.dislikes,
+                comment.created_at,
+                comment.updated_at,
                 user
             )
-            return postInst
+            return commentInst
 
         })
-        const output = this.postDTO.GetPostOutputDTO(posts)
+        const output = this.commentDTO.GetCommentOutputDTO(comments)
 
         return output
 
     }
 
-    public createPost = async (input: CreatePostInputDTO): Promise<CreatePostOutputDTO> => {
+    public createComment = async (input: CreateCommentInputDTO): Promise<CreateCommentOutputDTO> => {
 
-        const { content, token } = input
+        const { content, token, postId } = input
         const payload = this.tokenManager.getPyaload(token)
 
         if (payload === null) {
             throw new BadRequestError("Usuario não logado")
         }
-        const post = new Post(
-            this.idGenerator.generate(),
+
+        const post  = await this.postDatabase.getPostById(postId)
+        if(!post){
+            throw new NotFoundError("Post não encontrado")
+        }
+        const newId =this.idGenerator.generate()
+        const comment = new Comment(
+            newId,
             content,
+            postId,
             0,
             0,
             nowDate,
             nowDate,
             payload
         )
-        const postDB = post.toPostDatabase()
-        await this.postDatabase.insertPost(postDB)
+        const commentDB = comment.toCommentDatabase()
+        await this.commentDatabase.insertComment(commentDB)
 
-        return this.postDTO.CreatePostOutputDTO(post)
+       await this.commentDatabase.handleCommentsChange(newId,1)
+
+        return this.commentDTO.CreateCommentOutputDTO(comment)
     }
 
-    public editPost = async (input: { data: CreatePostInputDTO, id: string }): Promise<CreatePostOutputDTO> => {
+    public editComment = async (input: { data: CreateCommentInputDTO, id: string }): Promise<CreateCommentOutputDTO> => {
 
-        const post = await this.postDatabase.getPostById(input.id)
-        if (!post) {
-            throw new NotFoundError("Post não encontrado")
+        const comment = await this.commentDatabase.getCommentById(input.id)
+        if (!comment) {
+            throw new NotFoundError("Comment não encontrado")
         }
-        const user = await this.userDatabase.getUserById(post.creator_id)
+        const user = await this.userDatabase.getUserById(comment.creator_id)
         if (!user) {
-            throw new NotFoundError("Erro ao procurar Id do criador do post")
+            throw new NotFoundError("Erro ao procurar Id do criador do comment")
         }
         const payload = this.tokenManager.getPyaload(input.data.token)
 
@@ -104,59 +113,61 @@ export class PostBusiness {
             throw new BadRequestError("Token invalido")
         }
         if (payload.id !== user.id) {
-            throw new BadRequestError("Apenas o criador pode editar o post")
+            throw new BadRequestError("Apenas o criador pode editar o comment")
 
         }
 
-        const postEdited = new Post(
-            post.id,
-            post.content,
-            post.likes,
-            post.dislikes,
-            post.created_at,
-            post.updated_at,
+        const commentEdited = new Comment(
+            comment.id,
+            comment.content,
+            comment.post_id,
+            comment.likes,
+            comment.dislikes,
+            comment.created_at,
+            comment.updated_at,
             user)
 
-        postEdited.setContent(input.data.content)
-        postEdited.setUpdatedAt(nowDate)
-        const toEdit: PostEditDB = {
-            content: postEdited.getContent(),
-            updated_at: postEdited.getUpdatedAt()
+        commentEdited.setContent(input.data.content)
+        commentEdited.setUpdatedAt(nowDate)
+        const toEdit: CommentEditDB = {
+            content: commentEdited.getContent(),
+            updated_at: commentEdited.getUpdatedAt()
         }
 
-        await this.postDatabase.editPostbyId(postEdited.getId(), toEdit)
+        await this.commentDatabase.editCommentbyId(commentEdited.getId(), toEdit)
 
-        const output = this.postDTO.CreatePostOutputDTO(postEdited)
+        const output = this.commentDTO.CreateCommentOutputDTO(commentEdited)
         return output
 
 
     }
 
-    public deletePost = async (input: DeletePostInputDTO) => {
+    public deleteComment = async (input: DeleteCommentInputDTO) => {
 
         const {token,id} = input
+
         const payload = this.tokenManager.getPyaload(token)
         if (payload === null) {
             throw new BadRequestError("Usuario não logado")
         }
 
         if (payload.role !== Roles.ADMIN) {
-        const postsCreatedByUser = await this.postDatabase.getPostByUserId(payload.id)
-
-        const isPostByUser = postsCreatedByUser.find((post) => post.id === id)
-     
-            if (!isPostByUser) {
-                throw new BadRequestError("Post não foi criado pelo usuario")
+        const commentsCreatedByUser = await this.commentDatabase.getCommentByUserId(payload.id)
+        
+        const isCommentByUser = commentsCreatedByUser.find((comment) => comment.id === id)
+            
+            if (!isCommentByUser) {
+                throw new BadRequestError("Comment não foi criado pelo usuario")
             }
         }
 
 
-        await this.postDatabase.deletePostById(id)
-        
-        return this.postDTO.DeletePostOutputDTO()
+        await this.commentDatabase.deleteCommentById(id)
+        await this.commentDatabase.handleCommentsChange(id,-1)
+        return this.commentDTO.DeleteCommentOutputDTO()
     }
-    public reactionPost = async (input:PostReactionInputDTO): Promise<PostReactionOutputDTO> => {
-        const {like,idPost,token} = input
+    public reactionComment = async (input:CommentReactionInputDTO): Promise<CommentReactionOutputDTO> => {
+        const {like,idComment,token} = input
         const likeStr = like ? "like" : "dislike"
 
         const payload = this.tokenManager.getPyaload(token)
@@ -174,63 +185,64 @@ export class PostBusiness {
             name: user.name,
             role: user.role
         }
-        const postDB = await this.postDatabase.getPostById(idPost)
-        if (!postDB) {
-            throw new NotFoundError("Post não encontrado")
+        const commentDB = await this.commentDatabase.getCommentById(idComment)
+        if (!commentDB) {
+            throw new NotFoundError("Comment não encontrado")
         }
-        const post = new Post(
-            postDB.id,
-            postDB.content,
-            postDB.likes,
-            postDB.dislikes,
-            postDB.created_at,
-            postDB.updated_at,
+        const comment = new Comment(
+            commentDB.id,
+            commentDB.content,
+            commentDB.post_id,
+            commentDB.likes,
+            commentDB.dislikes,
+            commentDB.created_at,
+            commentDB.updated_at,
             userOutput
         )
 
-        const reactionDB: Reaction = {
+        const reactionDB: ReactionComment = {
             user_id: user.id,
-            post_id: idPost,
+            comment_id: idComment,
             like
         }
         let message
-        const reaction = await this.reactionDatabase.findReaction(reactionDB)
+        const reaction = await this.reactionCommentDatabase.findReaction(reactionDB)
         if (reaction) {
             console.log(reaction.like, like)
             if (reaction.like == like) {//neutro
-                like ? post.setLikes(-1) : post.setDislikes(-1)
+                like ? comment.setLikes(-1) : comment.setDislikes(-1)
                 const toEdit = {
-                    likes: post.getLikes(),
-                    dislikes: post.getDislikes()
+                    likes: comment.getLikes(),
+                    dislikes: comment.getDislikes()
                 }
-                await this.reactionDatabase.deleteReaction(reactionDB)
-                await this.postDatabase.editPostbyId(post.getId(), toEdit)
+                await this.reactionCommentDatabase.deleteReaction(reactionDB)
+                await this.commentDatabase.editCommentbyId(comment.getId(), toEdit)
                 message = `O usuario desfez o ${likeStr}`
 
             } else {//inverte reação
                 if (like) {
-                    post.setDislikes(-1)
-                    post.setLikes(1)
+                    comment.setDislikes(-1)
+                    comment.setLikes(1)
                 } else {
-                    post.setDislikes(1)
-                    post.setLikes(-1)
+                    comment.setDislikes(1)
+                    comment.setLikes(-1)
                 }
                 const toEdit = {
-                    likes: post.getLikes(),
-                    dislikes: post.getDislikes()
+                    likes: comment.getLikes(),
+                    dislikes: comment.getDislikes()
                 }
-                await this.reactionDatabase.editReaction(reactionDB)
-                await this.postDatabase.editPostbyId(post.getId(), toEdit)
+                await this.reactionCommentDatabase.editReaction(reactionDB)
+                await this.commentDatabase.editCommentbyId(comment.getId(), toEdit)
                 message = `O usuario trocou para ${likeStr}`
             }
         } else {
-            like ? post.setLikes(1) : post.setDislikes(1)
+            like ? comment.setLikes(1) : comment.setDislikes(1)
             const toEdit = {
-                likes: post.getLikes(),
-                dislikes: post.getDislikes()
+                likes: comment.getLikes(),
+                dislikes: comment.getDislikes()
             }
-            await this.reactionDatabase.newReaction(reactionDB)
-            await this.postDatabase.editPostbyId(post.getId(), toEdit)
+            await this.reactionCommentDatabase.newReaction(reactionDB)
+            await this.commentDatabase.editCommentbyId(comment.getId(), toEdit)
             message = `O usuario deu ${likeStr} no video`
         }
         return { message }

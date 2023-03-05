@@ -70,3 +70,9 @@ export interface Reaction{
     post_id:string,
     like:boolean
 }
+export interface ReactionComment{
+    user_id:string,
+    comment_id:string,
+    like:boolean
+}
+
