@@ -10,8 +10,8 @@ import { PasswordIncorrectError } from "../error/PasswordIncorrectError";
 import { User } from "../models/User";
 import { HashManager } from "../services/HashManager";
 import { IdGenerator } from "../services/IdGenerator";
-import { TokenManager, TokenPayload } from "../services/TokenManager";
-import { Roles } from "../types";
+import { TokenManager } from "../services/TokenManager";
+import { Roles, TokenPayload } from "../types";
 
 export class UserBusiness{
     constructor(
@@ -100,7 +100,7 @@ export class UserBusiness{
     public editUser = async (input:EditUserInputDTO):Promise<EditUserOutputDTO>=>{
         const {id,email, password,role,token} = input
 
-        const payload = this.tokenManager.getPyaload(token)
+        const payload = this.tokenManager.getPayload(token)
         if(payload === null){
             throw new BadRequestError("Token invalido")
         }
@@ -166,7 +166,7 @@ export class UserBusiness{
 
     public deleteUser = async (input:DeleteUserInputDTO):Promise<DeleteUserOutputDTO> => {
         const {id, token} = input
-        const payload = this.tokenManager.getPyaload(token)
+        const payload = this.tokenManager.getPayload(token)
         if(payload === null){
             throw new BadRequestError("Token invalido")
         }

@@ -76,3 +76,8 @@ export interface ReactionComment{
     like:boolean
 }
 
+export interface TokenPayload{
+    id:string,
+    name:string,
+    role:Roles
+}
