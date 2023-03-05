@@ -1,11 +1,11 @@
 import {UserBusiness} from "../../src/Business/UserBusiness"
-import { CreateUserInputDTO, CreateUserOutputDTO, UserDTO } from "../../src/dto/UserDTO"
+import {  DeleteUserInputDTO, DeleteUserOutputDTO, UserDTO } from "../../src/dto/UserDTO"
 import { UserDatabaseMock } from "../moks/database/UserDatabaseMock"
 import { HashManagerMock } from "../moks/service/HashManagerMock"
 import { IdGeneratorMock } from "../moks/service/IdGeneretorMock"
 import { TokenManagerMock } from "../moks/service/TokenManagerMock"
 
-describe("Create new user",()=>{
+describe("Delete user",()=>{
     const userBusinnes = new UserBusiness(
         new UserDTO(),
         new UserDatabaseMock(),
@@ -13,19 +13,14 @@ describe("Create new user",()=>{
         new TokenManagerMock(),
         new HashManagerMock()
     )
-    const userDatabase = new UserDatabaseMock()
-    const input:CreateUserInputDTO = {
-        name:"New User",
-        email:"new@mock.com",
-        password:"Senh@1234"
+    const input:DeleteUserInputDTO = {
+        id:"id-mock",
+        token:"token-mock-normal"
     }
     test("Input e output do endpoint deve ser de acordo com DTO", async()=>{
-        const output : CreateUserOutputDTO = await userBusinnes.createUser(input)
+        const output : DeleteUserOutputDTO = await userBusinnes.deleteUser(input)
         
-        expect(output).toHaveProperty("message")
-        expect(output).toHaveProperty("user")
-        expect(output).toHaveProperty("token")
         
-        expect(output.token).toBe("token-mock-normal")
+        expect(output.message).toBe("Usuario deletado com sucesso")
     })
 })
