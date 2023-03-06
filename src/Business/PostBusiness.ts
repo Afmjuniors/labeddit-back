@@ -1,10 +1,13 @@
 import { nowDate } from "../constants/patterns";
+import { CommentDatabase } from "../database/CommentDatabase";
 import { PostDatabase } from "../database/PostDatabase";
 import { ReactionDatabase } from "../database/ReactionDatabase";
 import { UserDatabase } from "../database/UserDatabase";
-import { PostsOutputDTO, PostsDTO, CreatePostOutputDTO, PostReactionOutputDTO, CreatePostInputDTO, DeletePostInputDTO, PostReactionInputDTO, GetPostsInputDTO } from "../dto/PostDTO";
+import { CommentsOutputDTO } from "../dto/CommentDTO";
+import { PostOutputDTO, PostsDTO, CreatePostOutputDTO, PostReactionOutputDTO, CreatePostInputDTO, DeletePostInputDTO, PostReactionInputDTO, GetPostsInputDTO } from "../dto/PostDTO";
 import { BadRequestError } from "../error/BadRequestError";
 import { NotFoundError } from "../error/NoTFoundError";
+import { Comment } from "../models/Comment";
 import { Post } from "../models/Post";
 import { IdGenerator } from "../services/IdGenerator";
 import { TokenManager } from "../services/TokenManager";
@@ -16,11 +19,35 @@ export class PostBusiness {
         private postDatabase: PostDatabase,
         private userDatabase: UserDatabase,
         private reactionDatabase: ReactionDatabase,
+        private commentDatabase: CommentDatabase,
         private idGenerator: IdGenerator,
         private tokenManager: TokenManager
     ) { }
 
-    public getPosts = async (input: GetPostsInputDTO): Promise<PostsOutputDTO[]> => {
+
+    private getCommentsFromDB = async (id:string, payload:TokenPayload) : Promise<CommentsOutputDTO[]> =>{
+        const creator = {
+            id:payload.id,
+            name:payload.name,
+            role: payload.role
+        }
+        const commentsDb = await this.commentDatabase.getAllComments(id)
+        const comments:CommentsOutputDTO[] = commentsDb.map((commentDb)=>{
+            return new Comment(
+                commentDb.id,
+                commentDb.content,
+                commentDb.post_id,
+                commentDb.likes,
+                commentDb.dislikes,
+                commentDb.created_at,
+                commentDb.updated_at,
+                creator).toCommentOutput()
+                
+            })
+            return comments
+    }
+
+    public getPosts = async (input: GetPostsInputDTO): Promise<PostOutputDTO[]> => {
         const {user, token} = input
         const payload = this.tokenManager.getPayload(token)
 
@@ -60,7 +87,7 @@ export class PostBusiness {
             return postInst
 
         })
-        const output = this.postDTO.GetPostOutputDTO(posts)
+        const output = this.postDTO.GetPostOutputDTO(posts,[])
 
         return output
 
@@ -127,9 +154,10 @@ export class PostBusiness {
             updated_at: postEdited.getUpdatedAt()
         }
 
-        await this.postDatabase.editPostbyId(postEdited.getId(), toEdit)
 
-        const output = this.postDTO.CreatePostOutputDTO(postEdited)
+        await this.postDatabase.editPostbyId(postEdited.getId(), toEdit)
+        const comments= await this.getCommentsFromDB(postEdited.getId(),payload)
+        const output = this.postDTO.CreatePostOutputDTO(postEdited,comments)
         return output
 
 
