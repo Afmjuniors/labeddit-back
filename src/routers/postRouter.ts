@@ -3,6 +3,7 @@ import { PostBusiness } from "../Business/PostBusiness"
 import { UserBusiness } from "../Business/UserBusiness"
 import { PostController } from "../controller/PostController"
 import { UserControler } from "../controller/UserController"
+import { CommentDatabase } from "../database/CommentDatabase"
 import { PostDatabase } from "../database/PostDatabase"
 import { ReactionDatabase } from "../database/ReactionDatabase"
 import { UserDatabase } from "../database/UserDatabase"
@@ -21,6 +22,7 @@ const postControllet = new PostController(
         new PostDatabase(),
         new UserDatabase(),
         new ReactionDatabase(),
+        new CommentDatabase(),
         new IdGenerator(),
         new TokenManager()
     )

@@ -9,8 +9,8 @@ import { BadRequestError } from "../error/BadRequestError";
 import { NotFoundError } from "../error/NoTFoundError";
 import { Comment } from "../models/Comment";
 import { IdGenerator } from "../services/IdGenerator";
-import { TokenManager, TokenPayload } from "../services/TokenManager";
-import { CommentDB, CommentEditDB, PostEditDB, Reaction, ReactionComment, Roles } from "../types";
+import { TokenManager } from "../services/TokenManager";
+import { CommentDB, CommentEditDB, PostEditDB, Reaction, ReactionComment, Roles, TokenPayload } from "../types";
 
 export class CommentBusiness {
     constructor(
@@ -25,7 +25,7 @@ export class CommentBusiness {
 
     public getComments = async (input: GetCommentsInputDTO): Promise<CommentsOutputDTO[]> => {
         const {postId, token} = input
-        const payload = this.tokenManager.getPyaload(token)
+        const payload = this.tokenManager.getPayload(token)
 
         if (payload === null) {
             throw new BadRequestError("Usuario não logado")
@@ -67,7 +67,7 @@ export class CommentBusiness {
     public createComment = async (input: CreateCommentInputDTO): Promise<CreateCommentOutputDTO> => {
 
         const { content, token, postId } = input
-        const payload = this.tokenManager.getPyaload(token)
+        const payload = this.tokenManager.getPayload(token)
 
         if (payload === null) {
             throw new BadRequestError("Usuario não logado")
@@ -106,7 +106,7 @@ export class CommentBusiness {
         if (!user) {
             throw new NotFoundError("Erro ao procurar Id do criador do comment")
         }
-        const payload = this.tokenManager.getPyaload(input.data.token)
+        const payload = this.tokenManager.getPayload(input.data.token)
 
         if (payload === null) {
             throw new BadRequestError("Token invalido")
@@ -145,7 +145,7 @@ export class CommentBusiness {
 
         const {token,id} = input
 
-        const payload = this.tokenManager.getPyaload(token)
+        const payload = this.tokenManager.getPayload(token)
         if (payload === null) {
             throw new BadRequestError("Usuario não logado")
         }
@@ -169,7 +169,7 @@ export class CommentBusiness {
         const {like,idComment,token} = input
         const likeStr = like ? "like" : "dislike"
 
-        const payload = this.tokenManager.getPyaload(token)
+        const payload = this.tokenManager.getPayload(token)
 
         if (payload === null) {
             throw new BadRequestError("Usuario não logado")

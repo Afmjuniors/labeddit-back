@@ -1,4 +1,5 @@
-import { PostsOutputDTO } from "../dto/PostDTO"
+import { CommentsOutputDTO } from "../dto/CommentDTO"
+import { PostOutputDTO, PostsOutput} from "../dto/PostDTO"
 import { PostDB, Roles } from "../types"
 
 export class Post{
@@ -50,19 +51,22 @@ export class Post{
             updated_at:this.updatedAt
         }
     }
-    public toPostOutput (): PostsOutputDTO{
+    public toPostOutput (commentsExt:CommentsOutputDTO[]):PostOutputDTO{
         return{
             id:this.id,
             content:this.content,
             likes:this.likes,
             dislikes:this.dislikes,
-            createdAt:this.createdAt,
-            comments:this.comments,
-            updatedAt:this.updatedAt,
             creator:{
                 id:this.creator.id,
                 name:this.creator.name
-            }
+            },
+            comments:{
+                quantity:this.comments,
+                comments: commentsExt
+            },
+            createdAt:this.createdAt,
+            updatedAt:this.updatedAt
         
         }
     }

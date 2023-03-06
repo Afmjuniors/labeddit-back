@@ -1,13 +1,31 @@
 import { BadRequestError } from "../error/BadRequestError"
 import { Post } from "../models/Post"
+import { CommentsOutputDTO } from "./CommentDTO"
 
-export interface PostsOutputDTO{
+
+export interface PostOutputDTO{
     id:string,
     content:string,
     likes:number,
     dislikes:number,
+    creator:{
+        id:string,
+        name:string,
+    }
+    comments:{
+        quantity:number,
+        comments:CommentsOutputDTO[]
+    }
     createdAt:string,
+    updatedAt:string,
+}
+export interface PostsOutput{
+    id:string,
+    content:string,
+    likes:number,
+    dislikes:number,
     comments:number,
+    createdAt:string,
     updatedAt:string,
     creator:{
         id:string,
@@ -35,7 +53,7 @@ export interface DeletePostOutputDTO{
 
 export interface CreatePostOutputDTO{
     message:string,
-    post:PostsOutputDTO
+    post:PostOutputDTO
 }
 
 export interface PostReactionInputDTO{
@@ -73,8 +91,8 @@ export class PostsDTO{
         }
         return dto
     }
-    public GetPostOutputDTO = (posts:Post[]): PostsOutputDTO[] =>{
-        const dto:PostsOutputDTO[] = posts.map((post)=>post.toPostOutput())
+    public GetPostOutputDTO = (posts:Post[], comments:CommentsOutputDTO[]): PostOutputDTO[] =>{
+        const dto:PostOutputDTO[] = posts.map((post)=>post.toPostOutput(comments))
         return dto
     }
     
@@ -94,10 +112,10 @@ export class PostsDTO{
         return dto
 
     }
-    public CreatePostOutputDTO = (post:Post):CreatePostOutputDTO =>{
+    public CreatePostOutputDTO = (post:Post, comments:CommentsOutputDTO[]):CreatePostOutputDTO =>{
         const dto :CreatePostOutputDTO= {
             message:"Post adicionado com sucesso",
-            post: post.toPostOutput()
+            post: post.toPostOutput(comments)
         }
         return dto
     }
