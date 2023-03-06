@@ -48,23 +48,16 @@ export class PostBusiness {
     }
 
     public getPosts = async (input: GetPostsInputDTO): Promise<PostOutputDTO[]> => {
-        const {user, token} = input
+        const { token} = input
         const payload = this.tokenManager.getPayload(token)
 
         if (payload === null) {
             throw new BadRequestError("Usuario não logado")
         }
-        console.log(user)
-        let postsDB
-        if (!user) {
-            const posts: PostDB[] = await this.postDatabase.getAllPosts()
-            postsDB = posts
-        } else {
-            const posts: PostDB[] = await this.postDatabase.getPostByUserId(user)
-            postsDB = posts
-        }
+        const postsDB: PostDB[] = await this.postDatabase.getAllPosts()
+   
         const users = await this.userDatabase.getAllUsers()
-        const posts = postsDB.map((post) => {
+        const posts = postsDB.map( (post) => {
             const userFind = users.find((user) => user.id === post.creator_id)
             if (!userFind) {
                 throw new Error("Usuario não encontrado");
@@ -87,8 +80,13 @@ export class PostBusiness {
             return postInst
 
         })
-        const output = this.postDTO.GetPostOutputDTO(posts,[])
-
+        let output : PostOutputDTO[] = []
+       for (let i of posts){
+        const comments = await this.getCommentsFromDB(i.getId(),payload)
+        const result = i.toPostOutput(comments)
+        output.push(result)
+       }
+      
         return output
 
     }
@@ -114,7 +112,7 @@ export class PostBusiness {
         const postDB = post.toPostDatabase()
         await this.postDatabase.insertPost(postDB)
 
-        return this.postDTO.CreatePostOutputDTO(post)
+        return this.postDTO.CreatePostOutputDTO(post,[])
     }
 
     public editPost = async (input: { data: CreatePostInputDTO, id: string }): Promise<CreatePostOutputDTO> => {

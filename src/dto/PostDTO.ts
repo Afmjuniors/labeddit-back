@@ -13,7 +13,7 @@ export interface PostOutputDTO{
         name:string,
     }
     comments:{
-        quantity:number,
+        count:number,
         comments:CommentsOutputDTO[]
     }
     createdAt:string,

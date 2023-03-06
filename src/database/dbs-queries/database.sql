@@ -91,3 +91,6 @@ VALUES
 
 
 SELECT * FROM users;
+
+SELECT * FROM posts
+LEFT JOIN comments ON comments.post_id = posts.id

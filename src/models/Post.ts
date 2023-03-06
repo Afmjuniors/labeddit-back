@@ -62,7 +62,7 @@ export class Post{
                 name:this.creator.name
             },
             comments:{
-                quantity:this.comments,
+                count:this.comments,
                 comments: commentsExt
             },
             createdAt:this.createdAt,
