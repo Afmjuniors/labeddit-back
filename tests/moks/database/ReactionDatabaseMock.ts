@@ -10,9 +10,19 @@ export class ReactionDatabaseMock extends BaseDatabase{
 
     }
 
-    public findReaction = async (reaction:Reaction) : Promise<Reaction>=>{
+    public findReaction = async (reaction:Reaction) : Promise<Reaction | undefined>=>{
 
-        return reaction
+        // return {
+        //     user_id:reaction.user_id,
+        //     post_id:reaction.post_id,
+        //     like:reaction.like
+        // }
+        return {
+            user_id:reaction.user_id,
+            post_id:reaction.post_id,
+            like:!reaction.like
+        }
+        // return undefined
 
     }
 
