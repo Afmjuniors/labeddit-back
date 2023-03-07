@@ -170,10 +170,11 @@ export class PostBusiness {
         }
 
         if (payload.role !== Roles.ADMIN) {
-        const postsCreatedByUser = await this.postDatabase.getPostByUserId(payload.id)
-
-        const isPostByUser = postsCreatedByUser.find((post) => post.id === id)
-     
+        const post = await this.postDatabase.getPostById(id)
+        if(!post){
+            throw new NotFoundError("Post não encontrado")
+        }
+        const isPostByUser = post.creator_id===payload.id
             if (!isPostByUser) {
                 throw new BadRequestError("Post não foi criado pelo usuario")
             }

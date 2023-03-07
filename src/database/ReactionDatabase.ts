@@ -11,7 +11,7 @@ export class ReactionDatabase extends BaseDatabase{
         .insert(reaction)
     }
 
-    public findReaction = async (reaction:Reaction) : Promise<Reaction>=>{
+    public findReaction = async (reaction:Reaction) : Promise<Reaction | undefined>=>{
         const [reactioPost] : Reaction[]= await  BaseDatabase
         .connection(ReactionDatabase.TABLE_REACTION)
         .where({user_id:reaction.user_id})

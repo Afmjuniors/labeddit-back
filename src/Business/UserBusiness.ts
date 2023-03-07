@@ -125,7 +125,6 @@ export class UserBusiness{
             }
         }
         const userDB = await this.userDatabase.getUserById(id||payload.id)
-        console.log(userDB)
 
         if(userDB === undefined){
             throw new NotFoundError("usuario não encontrado")
