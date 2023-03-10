@@ -25,10 +25,10 @@ export class CommentsController{
             console.log(error)
         
             if (error instanceof BaseError) {
-                res.status(500).send(error.message)
+                res.status(error.statusCode).send(error.message)
             } else {
                 res.status(500).send("Erro inesperado")
-            }
+            } 
         }
   
 
@@ -50,22 +50,22 @@ export class CommentsController{
             console.log(error)
         
             if (error instanceof BaseError) {
-                res.status(500).send(error.message)
+                res.status(error.statusCode).send(error.message)
             } else {
                 res.status(500).send("Erro inesperado")
-            }
+            } 
         }
         
     }
     public editComment =async (req:Request,res:Response) => {
         try {
-            const input = {
-                data:this.commentDTO.CreateCommentInputDTO(
+            const input = 
+                this.commentDTO.EditCommentDTO(
                     req.body.content,
-                    req.params.id,
-                    req.headers.authorization),
-                id: req.params.id
-            }
+                    req.headers.authorization,
+                    req.params.id)
+               
+            
 
 
             
@@ -77,10 +77,10 @@ export class CommentsController{
             console.log(error)
         
             if (error instanceof BaseError) {
-                res.status(500).send(error.message)
+                res.status(error.statusCode).send(error.message)
             } else {
                 res.status(500).send("Erro inesperado")
-            }
+            } 
         }
         
     }
@@ -99,10 +99,10 @@ export class CommentsController{
             console.log(error)
         
             if (error instanceof BaseError) {
-                res.status(500).send(error.message)
+                res.status(error.statusCode).send(error.message)
             } else {
                 res.status(500).send("Erro inesperado")
-            }
+            } 
         }
   
 
@@ -123,10 +123,10 @@ export class CommentsController{
             console.log(error)
         
             if (error instanceof BaseError) {
-                res.status(500).send(error.message)
+                res.status(error.statusCode).send(error.message)
             } else {
                 res.status(500).send("Erro inesperado")
-            }
+            } 
         }
 
     }

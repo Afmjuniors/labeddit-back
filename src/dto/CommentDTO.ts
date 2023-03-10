@@ -1,5 +1,6 @@
 import { BadRequestError } from "../error/BadRequestError"
 import { Comment } from "../models/Comment"
+import { CreatePostInputDTO } from "./PostDTO"
 
 export interface CommentsOutputDTO {
     id: string,
@@ -25,6 +26,11 @@ export interface CreateCommentInputDTO {
     content: string,
     postId: string
     token: string
+}
+export interface EditCommentInputDTO{
+    content:string,
+    token:string,
+    id:string
 }
 export interface DeleteCommentInputDTO {
     id: string,
@@ -120,6 +126,28 @@ export class CommentsDTO {
         return {
             message: "Comment deletado com sucesso"
         }
+    }
+
+    public EditCommentDTO = (
+        content:unknown,
+        token:unknown,
+        id:unknown
+    ): EditCommentInputDTO =>{
+        if(typeof content !=="string"){
+            throw new BadRequestError("content deve ser uma string")
+        }
+        if(typeof token !=="string"){
+            throw new BadRequestError("token deve ser uma string")
+        }
+        if(typeof id !== "string"){
+            throw new BadRequestError("Id deve ser uma string")
+        }
+        const dto = {
+            content,
+            token,
+            id
+        }
+        return dto
     }
 
 

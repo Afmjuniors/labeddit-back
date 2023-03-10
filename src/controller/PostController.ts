@@ -25,10 +25,10 @@ export class PostController{
             console.log(error)
         
             if (error instanceof BaseError) {
-                res.status(500).send(error.message)
+                res.status(error.statusCode).send(error.message)
             } else {
                 res.status(500).send("Erro inesperado")
-            }
+            } 
         }
   
 
@@ -47,10 +47,10 @@ export class PostController{
             console.log(error)
         
             if (error instanceof BaseError) {
-                res.status(500).send(error.message)
+                res.status(error.statusCode).send(error.message)
             } else {
                 res.status(500).send("Erro inesperado")
-            }
+            } 
         }
         
     }
@@ -71,10 +71,10 @@ export class PostController{
             console.log(error)
         
             if (error instanceof BaseError) {
-                res.status(500).send(error.message)
+                res.status(error.statusCode).send(error.message)
             } else {
                 res.status(500).send("Erro inesperado")
-            }
+            } 
         }
         
     }
@@ -93,10 +93,10 @@ export class PostController{
             console.log(error)
         
             if (error instanceof BaseError) {
-                res.status(500).send(error.message)
+                res.status(error.statusCode).send(error.message)
             } else {
                 res.status(500).send("Erro inesperado")
-            }
+            } 
         }
   
 
@@ -117,10 +117,10 @@ export class PostController{
             console.log(error)
         
             if (error instanceof BaseError) {
-                res.status(500).send(error.message)
+                res.status(error.statusCode).send(error.message)
             } else {
                 res.status(500).send("Erro inesperado")
-            }
+            } 
         }
 
     }

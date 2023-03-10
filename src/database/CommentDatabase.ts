@@ -1,4 +1,5 @@
 import { BadRequestError } from "../error/BadRequestError";
+import { NotFoundError } from "../error/NoTFoundError";
 import { CommentDB, CommentEditDB, PostDB } from "../types";
 import { BaseDatabase } from "./BaseDatabase";
 import { PostDatabase } from "./PostDatabase";
@@ -25,17 +26,21 @@ export class CommentDatabase extends BaseDatabase{
         .where({id})
         return comment
     }
-    public handleCommentsChange = async(commentId:string,value:number):Promise<void> =>{
-     const [comment]:CommentDB[] = await BaseDatabase
-     .connection(CommentDatabase.TABLE_COMMENT)
-     .where({id:commentId})
+    public handleCommentsChange = async(id:string,value:number):Promise<void> =>{
+  
+    const comment = await this.getCommentById(id)
+
+     if(comment===undefined){
+        throw new NotFoundError("Comment n encontrado")
+     }
+
      const [post] :PostDB[] =  await BaseDatabase
      .connection(PostDatabase.TABLE_POST)
      .where({id:comment.post_id})
     const number = post.comments+value
     await BaseDatabase
      .connection(PostDatabase.TABLE_POST)
-     .update({comment:number})
+     .update({comments:number})
      .where({id:comment.post_id})
     }
     public insertComment =async (comment:CommentDB):Promise<void> => {

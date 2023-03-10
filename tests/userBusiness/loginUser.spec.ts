@@ -17,7 +17,7 @@ describe("Login",()=>{
         email:"adimn@mock.com",
         password:"senha"
     }
-    test("Input e output do endpoint deve ser de acordo com DTO", async()=>{
+    test("deve logar", async()=>{
         const output : LoginUserOutputDTO = await userBusinnes.loginUser(input)
         
         expect(output).toHaveProperty("message")

@@ -34,6 +34,12 @@ export interface PostsOutput{
 
 }
 
+export interface EditPostInputDTO{
+    data:CreatePostInputDTO,
+    id:string
+}
+
+
 export interface GetPostsInputDTO{
     user?:string,
     token:string 

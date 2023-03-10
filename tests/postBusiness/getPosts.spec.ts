@@ -18,7 +18,7 @@ describe("Create new Post", ()=>{
 )
     
     
-    test("Deve criar um post", async ()=>{
+    test("Deve pegar todos os posts", async ()=>{
         const input : GetPostsInputDTO ={
             token:"token-mock-normal"
         }

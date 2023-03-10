@@ -52,12 +52,12 @@ CREATE TABLE likes_dislikes(
 );
 CREATE TABLE likes_dislikes_comments(
     user_id TEXT NOT NULL,
-    coment_id TEXT NOT NULL,
+    comment_id TEXT NOT NULL,
     like INTEGER NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id)
         ON DELETE CASCADE 
         ON UPDATE CASCADE,
-    FOREIGN KEY (coment_id) REFERENCES comments(id)
+    FOREIGN KEY (comment_id) REFERENCES comments(id)
         ON DELETE CASCADE 
         ON UPDATE CASCADE
 );

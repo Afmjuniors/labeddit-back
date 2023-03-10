@@ -17,7 +17,7 @@ describe("Delete user",()=>{
         id:"id-mock",
         token:"token-mock-normal"
     }
-    test("Input e output do endpoint deve ser de acordo com DTO", async()=>{
+    test("Deve deletar um usuario", async()=>{
         const output : DeleteUserOutputDTO = await userBusinnes.deleteUser(input)
         
         

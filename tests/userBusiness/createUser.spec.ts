@@ -19,7 +19,7 @@ describe("Create new user",()=>{
         email:"new@mock.com",
         password:"Senh@1234"
     }
-    test("Input e output do endpoint deve ser de acordo com DTO", async()=>{
+    test("Deve criar um usuario", async()=>{
         const output : CreateUserOutputDTO = await userBusinnes.createUser(input)
         
         expect(output).toHaveProperty("message")

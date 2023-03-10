@@ -32,20 +32,10 @@ const commentsController = new CommentsController(
     )
 
 )
-// const postControllet = new PostController( 
-//     postsDTO,
-//     new PostBusiness(
-//         postsDTO,
-//         new PostDatabase(),
-//         new UserDatabase(),
-//         new ReactionDatabase(),
-//         new IdGenerator(),
-//         new TokenManager()
-//     )
-// )
 
-commentsRouter.get('/', commentsController.getComments)
-commentsRouter.post('/', commentsController.createComment)
+
+commentsRouter.get('/:id', commentsController.getComments)
+commentsRouter.post('/:id', commentsController.createComment)
 
 commentsRouter.put('/:id/reaction', commentsController.reactionComment) //reaction
 

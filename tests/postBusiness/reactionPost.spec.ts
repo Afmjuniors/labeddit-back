@@ -18,7 +18,7 @@ describe("Create new Post", ()=>{
 )
     
     
-    test("Deve criar um post", async ()=>{
+    test("Deve reagir ha um post", async ()=>{
         const input :PostReactionInputDTO ={
             like:true,
             idPost:"id-mock-p2",

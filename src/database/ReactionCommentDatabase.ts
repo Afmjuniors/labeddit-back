@@ -14,7 +14,7 @@ export class ReactionCommentDatabase extends BaseDatabase{
         const [reactioPost] : ReactionComment[]= await  BaseDatabase
         .connection(ReactionCommentDatabase.TABLE_REACTION_COMMENTS)
         .where({user_id:reaction.user_id})
-        .andWhere({post_id:reaction.comment_id})
+        .andWhere({comment_id:reaction.comment_id})
 
         return reactioPost
     }
