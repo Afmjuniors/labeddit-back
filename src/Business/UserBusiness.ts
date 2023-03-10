@@ -3,7 +3,7 @@ import { UserDatabase } from "../database/UserDatabase";
 import { CreateUserInputDTO, CreateUserOutputDTO,  DeleteUserInputDTO,  DeleteUserOutputDTO,  EditUserInputDTO,  EditUserOutputDTO,  LoginUserInputDTO, LoginUserOutputDTO, UserDTO } from "../dto/UserDTO";
 import { BadRequestError } from "../error/BadRequestError";
 import { DeniedAuthoError } from "../error/DeniedAuthoError";
-import { NotFoundError } from "../error/NoTFoundError";
+import { NotFoundError } from "../error/NotFoundError";
 import { NotUniqueValueError } from "../error/NotUniqueValueError";
 import { PasswordIncorrectError } from "../error/PasswordIncorrectError";
 import { User } from "../models/User";

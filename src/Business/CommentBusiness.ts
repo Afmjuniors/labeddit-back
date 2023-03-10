@@ -5,7 +5,7 @@ import { ReactionCommentDatabase } from "../database/ReactionCommentDatabase";
 import { UserDatabase } from "../database/UserDatabase";
 import { CommentsOutputDTO, CommentsDTO, CreateCommentOutputDTO, CommentReactionOutputDTO, CreateCommentInputDTO, DeleteCommentInputDTO, CommentReactionInputDTO, GetCommentsInputDTO, EditCommentInputDTO } from "../dto/CommentDTO";
 import { BadRequestError } from "../error/BadRequestError";
-import { NotFoundError } from "../error/NoTFoundError";
+import { NotFoundError } from "../error/NotFoundError";
 import { Comment } from "../models/Comment";
 import { IdGenerator } from "../services/IdGenerator";
 import { TokenManager } from "../services/TokenManager";

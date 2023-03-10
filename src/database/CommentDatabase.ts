@@ -1,4 +1,4 @@
-import { NotFoundError } from "../error/NoTFoundError";
+import { NotFoundError } from "../error/NotFoundError";
 import { CommentDB, CommentEditDB, PostDB } from "../types";
 import { BaseDatabase } from "./BaseDatabase";
 import { PostDatabase } from "./PostDatabase";

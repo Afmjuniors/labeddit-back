@@ -6,7 +6,7 @@ import { UserDatabase } from "../database/UserDatabase";
 import { CommentsOutputDTO } from "../dto/CommentDTO";
 import { PostOutputDTO, PostsDTO, CreatePostOutputDTO, PostReactionOutputDTO, CreatePostInputDTO, DeletePostInputDTO, PostReactionInputDTO, GetPostsInputDTO } from "../dto/PostDTO";
 import { BadRequestError } from "../error/BadRequestError";
-import { NotFoundError } from "../error/NoTFoundError";
+import { NotFoundError } from "../error/NotFoundError";
 import { Comment } from "../models/Comment";
 import { Post } from "../models/Post";
 import { IdGenerator } from "../services/IdGenerator";
