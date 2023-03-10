@@ -1,4 +1,3 @@
-import { BadRequestError } from "../error/BadRequestError";
 import { NotFoundError } from "../error/NoTFoundError";
 import { CommentDB, CommentEditDB, PostDB } from "../types";
 import { BaseDatabase } from "./BaseDatabase";

@@ -2,7 +2,6 @@ import { nowDate } from "../constants/patterns";
 import { CommentDatabase } from "../database/CommentDatabase";
 import { PostDatabase } from "../database/PostDatabase";
 import { ReactionCommentDatabase } from "../database/ReactionCommentDatabase";
-import { ReactionDatabase } from "../database/ReactionDatabase";
 import { UserDatabase } from "../database/UserDatabase";
 import { CommentsOutputDTO, CommentsDTO, CreateCommentOutputDTO, CommentReactionOutputDTO, CreateCommentInputDTO, DeleteCommentInputDTO, CommentReactionInputDTO, GetCommentsInputDTO, EditCommentInputDTO } from "../dto/CommentDTO";
 import { BadRequestError } from "../error/BadRequestError";
@@ -10,7 +9,7 @@ import { NotFoundError } from "../error/NoTFoundError";
 import { Comment } from "../models/Comment";
 import { IdGenerator } from "../services/IdGenerator";
 import { TokenManager } from "../services/TokenManager";
-import { CommentDB, CommentEditDB, PostEditDB, Reaction, ReactionComment, Roles, TokenPayload } from "../types";
+import { CommentDB, CommentEditDB,   ReactionComment, Roles, TokenPayload } from "../types";
 
 export class CommentBusiness {
     constructor(

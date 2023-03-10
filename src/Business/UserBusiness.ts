@@ -1,6 +1,5 @@
 import { nowDate, regexEmail, regexPassword } from "../constants/patterns";
 import { UserDatabase } from "../database/UserDatabase";
-import { DeletePostInputDTO } from "../dto/PostDTO";
 import { CreateUserInputDTO, CreateUserOutputDTO,  DeleteUserInputDTO,  DeleteUserOutputDTO,  EditUserInputDTO,  EditUserOutputDTO,  LoginUserInputDTO, LoginUserOutputDTO, UserDTO } from "../dto/UserDTO";
 import { BadRequestError } from "../error/BadRequestError";
 import { DeniedAuthoError } from "../error/DeniedAuthoError";
@@ -68,6 +67,7 @@ export class UserBusiness{
         const {email,password} = input
 
         const user = await this.userDatabase.getUserByEmail(email)
+
         if(!user){
             throw new NotFoundError("Usuario não encontrado")
         }
