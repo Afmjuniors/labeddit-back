@@ -4,7 +4,7 @@ import { PostDatabase } from "../database/PostDatabase";
 import { ReactionCommentDatabase } from "../database/ReactionCommentDatabase";
 import { ReactionDatabase } from "../database/ReactionDatabase";
 import { UserDatabase } from "../database/UserDatabase";
-import { CommentsOutputDTO, CommentsDTO, CreateCommentOutputDTO, CommentReactionOutputDTO, CreateCommentInputDTO, DeleteCommentInputDTO, CommentReactionInputDTO, GetCommentsInputDTO } from "../dto/CommentDTO";
+import { CommentsOutputDTO, CommentsDTO, CreateCommentOutputDTO, CommentReactionOutputDTO, CreateCommentInputDTO, DeleteCommentInputDTO, CommentReactionInputDTO, GetCommentsInputDTO, EditCommentInputDTO } from "../dto/CommentDTO";
 import { BadRequestError } from "../error/BadRequestError";
 import { NotFoundError } from "../error/NoTFoundError";
 import { Comment } from "../models/Comment";
@@ -90,15 +90,14 @@ export class CommentBusiness {
         )
         const commentDB = comment.toCommentDatabase()
         await this.commentDatabase.insertComment(commentDB)
-
        await this.commentDatabase.handleCommentsChange(newId,1)
 
         return this.commentDTO.CreateCommentOutputDTO(comment)
     }
 
-    public editComment = async (input: { data: CreateCommentInputDTO, id: string }): Promise<CreateCommentOutputDTO> => {
-
-        const comment = await this.commentDatabase.getCommentById(input.id)
+    public editComment = async (input : EditCommentInputDTO): Promise<CreateCommentOutputDTO> => {
+        const {id, content, token} = input
+        const comment = await this.commentDatabase.getCommentById(id)
         if (!comment) {
             throw new NotFoundError("Comment não encontrado")
         }
@@ -106,7 +105,7 @@ export class CommentBusiness {
         if (!user) {
             throw new NotFoundError("Erro ao procurar Id do criador do comment")
         }
-        const payload = this.tokenManager.getPayload(input.data.token)
+        const payload = this.tokenManager.getPayload(token)
 
         if (payload === null) {
             throw new BadRequestError("Token invalido")
@@ -126,12 +125,13 @@ export class CommentBusiness {
             comment.updated_at,
             user)
 
-        commentEdited.setContent(input.data.content)
+        commentEdited.setContent(content)
         commentEdited.setUpdatedAt(nowDate)
         const toEdit: CommentEditDB = {
             content: commentEdited.getContent(),
             updated_at: commentEdited.getUpdatedAt()
         }
+       
 
         await this.commentDatabase.editCommentbyId(commentEdited.getId(), toEdit)
 
@@ -144,7 +144,6 @@ export class CommentBusiness {
     public deleteComment = async (input: DeleteCommentInputDTO) => {
 
         const {token,id} = input
-
         const payload = this.tokenManager.getPayload(token)
         if (payload === null) {
             throw new BadRequestError("Usuario não logado")
@@ -159,10 +158,8 @@ export class CommentBusiness {
                 throw new BadRequestError("Comment não foi criado pelo usuario")
             }
         }
-
-
-        await this.commentDatabase.deleteCommentById(id)
         await this.commentDatabase.handleCommentsChange(id,-1)
+        await this.commentDatabase.deleteCommentById(id)
         return this.commentDTO.DeleteCommentOutputDTO()
     }
     public reactionComment = async (input:CommentReactionInputDTO): Promise<CommentReactionOutputDTO> => {
@@ -207,7 +204,6 @@ export class CommentBusiness {
         let message
         const reaction = await this.reactionCommentDatabase.findReaction(reactionDB)
         if (reaction) {
-            console.log(reaction.like, like)
             if (reaction.like == like) {//neutro
                 like ? comment.setLikes(-1) : comment.setDislikes(-1)
                 const toEdit = {

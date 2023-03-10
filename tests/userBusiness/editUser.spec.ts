@@ -17,7 +17,7 @@ describe("Edit user",()=>{
         email:"adimn2@mock.com",
         token:"token-mock-normal"
     }
-    test("Input e output do endpoint deve ser de acordo com DTO", async()=>{
+    test("Deve editar o usuario", async()=>{
         const output : EditUserOutputDTO = await userBusinnes.editUser(input)
         
         expect(output).toHaveProperty("message")

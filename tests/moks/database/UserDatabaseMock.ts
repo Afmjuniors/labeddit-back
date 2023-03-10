@@ -29,7 +29,7 @@ export class UserDatabaseMock extends BaseDatabase {
     }
     public getUserById = async (id: string): Promise<UserDB | undefined> => {
         switch (id) {
-            case "id-mock":
+            case "id-mock-a":
                 return {
                     id: "id-mock-a",
                     name: "admin mock",
