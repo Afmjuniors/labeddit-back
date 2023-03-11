@@ -19,6 +19,13 @@ export class ReactionDatabase extends BaseDatabase{
 
         return reactioPost
     }
+    
+    public findReactionByUser = async (user_id:string) : Promise<Reaction[] | undefined>=>{
+        const reactioPost : Reaction[]= await  BaseDatabase
+        .connection(ReactionDatabase.TABLE_REACTION)
+        .where({user_id})
+        return reactioPost
+    }
 
     public editReaction =async (reaction:Reaction): Promise<void> => {
         await BaseDatabase

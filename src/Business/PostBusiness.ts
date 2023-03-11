@@ -25,26 +25,16 @@ export class PostBusiness {
     ) { }
 
 
-    private getCommentsFromDB = async (id:string, payload:TokenPayload) : Promise<CommentsOutputDTO[]> =>{
-        const creator = {
-            id:payload.id,
-            name:payload.name,
-            role: payload.role
+    private getReaction = async (id:string, payload:TokenPayload) : Promise<boolean | undefined> =>{
+
+        const toFind = {
+            user_id:payload.id,
+            post_id:id,
+            like:true
         }
-        const commentsDb = await this.commentDatabase.getAllComments(id)
-        const comments:CommentsOutputDTO[] = commentsDb.map((commentDb)=>{
-            return new Comment(
-                commentDb.id,
-                commentDb.content,
-                commentDb.post_id,
-                commentDb.likes,
-                commentDb.dislikes,
-                commentDb.created_at,
-                commentDb.updated_at,
-                creator).toCommentOutput()
-                
-            })
-            return comments
+        const reactionUserInPost = await this.reactionDatabase.findReaction(toFind)
+
+            return reactionUserInPost?.like
     }
 
     public getPosts = async (input: GetPostsInputDTO): Promise<PostOutputDTO[]> => {
@@ -82,8 +72,8 @@ export class PostBusiness {
         })
         let output : PostOutputDTO[] = []
        for (let i of posts){
-        const comments = await this.getCommentsFromDB(i.getId(),payload)
-        const result = i.toPostOutput(comments)
+        const reaction = await this.getReaction(i.getId(),payload)
+        const result = i.toPostOutput(reaction)
         output.push(result)
        }
       
@@ -112,7 +102,7 @@ export class PostBusiness {
         const postDB = post.toPostDatabase()
         await this.postDatabase.insertPost(postDB)
 
-        return this.postDTO.CreatePostOutputDTO(post,[])
+        return this.postDTO.CreatePostOutputDTO(post)
     }
 
     public editPost = async (input: { data: CreatePostInputDTO, id: string }): Promise<CreatePostOutputDTO> => {
@@ -154,8 +144,7 @@ export class PostBusiness {
 
 
         await this.postDatabase.editPostbyId(postEdited.getId(), toEdit)
-        const comments= await this.getCommentsFromDB(postEdited.getId(),payload)
-        const output = this.postDTO.CreatePostOutputDTO(postEdited,comments)
+        const output = this.postDTO.CreatePostOutputDTO(postEdited)
         return output
 
 
