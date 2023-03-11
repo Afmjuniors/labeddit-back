@@ -8,14 +8,12 @@ export interface PostOutputDTO{
     content:string,
     likes:number,
     dislikes:number,
+    comments:number,
     creator:{
         id:string,
         name:string,
     }
-    comments:{
-        count:number,
-        comments:CommentsOutputDTO[]
-    }
+    userReaction?:boolean,
     createdAt:string,
     updatedAt:string,
 }
@@ -118,10 +116,10 @@ export class PostsDTO{
         return dto
 
     }
-    public CreatePostOutputDTO = (post:Post, comments:CommentsOutputDTO[]):CreatePostOutputDTO =>{
+    public CreatePostOutputDTO = (post:Post):CreatePostOutputDTO =>{
         const dto :CreatePostOutputDTO= {
             message:"Post adicionado com sucesso",
-            post: post.toPostOutput(comments)
+            post: post.toPostOutput()
         }
         return dto
     }

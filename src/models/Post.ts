@@ -51,20 +51,18 @@ export class Post{
             updated_at:this.updatedAt
         }
     }
-    public toPostOutput (commentsExt:CommentsOutputDTO[]):PostOutputDTO{
+    public toPostOutput (userLiked?:boolean):PostOutputDTO{
         return{
             id:this.id,
             content:this.content,
             likes:this.likes,
             dislikes:this.dislikes,
+            comments:this.comments,
             creator:{
                 id:this.creator.id,
                 name:this.creator.name
             },
-            comments:{
-                count:this.comments,
-                comments: commentsExt
-            },
+            userReaction:userLiked,
             createdAt:this.createdAt,
             updatedAt:this.updatedAt
         
