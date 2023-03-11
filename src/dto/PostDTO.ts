@@ -95,8 +95,8 @@ export class PostsDTO{
         }
         return dto
     }
-    public GetPostOutputDTO = (posts:Post[], comments:CommentsOutputDTO[]): PostOutputDTO[] =>{
-        const dto:PostOutputDTO[] = posts.map((post)=>post.toPostOutput(comments))
+    public GetPostOutputDTO = (posts:Post[], reaction:boolean): PostOutputDTO[] =>{
+        const dto:PostOutputDTO[] = posts.map((post)=>post.toPostOutput(reaction))
         return dto
     }
     
