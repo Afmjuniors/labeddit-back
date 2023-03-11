@@ -38,13 +38,24 @@ export class PostBusiness {
     }
 
     public getPosts = async (input: GetPostsInputDTO): Promise<PostOutputDTO[]> => {
-        const { token} = input
-        const payload = this.tokenManager.getPayload(token)
+        const { postId,token} = input
 
+        const payload = this.tokenManager.getPayload(token)
+        let postsDB =[]
         if (payload === null) {
             throw new BadRequestError("Usuario não logado")
         }
-        const postsDB: PostDB[] = await this.postDatabase.getAllPosts()
+        if(postId){
+            const pDB: PostDB | undefined = await this.postDatabase.getPostById(postId)
+            if(pDB===undefined){
+                throw new NotFoundError("Nenhum post encontrado")
+            }
+            postsDB.push(pDB)
+        }else{
+            const pDB: PostDB[] = await this.postDatabase.getAllPosts()
+            postsDB =pDB
+        }
+       
    
         const users = await this.userDatabase.getAllUsers()
         const posts = postsDB.map( (post) => {
