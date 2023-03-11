@@ -13,7 +13,7 @@ export interface PostOutputDTO{
         id:string,
         name:string,
     }
-    userReaction?:boolean,
+    userReaction:[boolean | undefined],
     createdAt:string,
     updatedAt:string,
 }
@@ -119,7 +119,7 @@ export class PostsDTO{
     public CreatePostOutputDTO = (post:Post):CreatePostOutputDTO =>{
         const dto :CreatePostOutputDTO= {
             message:"Post adicionado com sucesso",
-            post: post.toPostOutput()
+            post: post.toPostOutput(undefined)
         }
         return dto
     }

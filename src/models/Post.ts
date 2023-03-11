@@ -51,7 +51,7 @@ export class Post{
             updated_at:this.updatedAt
         }
     }
-    public toPostOutput (userLiked?:boolean):PostOutputDTO{
+    public toPostOutput (userLiked:boolean | undefined):PostOutputDTO{
         return{
             id:this.id,
             content:this.content,
@@ -62,7 +62,7 @@ export class Post{
                 id:this.creator.id,
                 name:this.creator.name
             },
-            userReaction:userLiked,
+            userReaction:[userLiked],
             createdAt:this.createdAt,
             updatedAt:this.updatedAt
         
