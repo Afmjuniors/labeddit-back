@@ -39,7 +39,7 @@ export interface EditPostInputDTO{
 
 
 export interface GetPostsInputDTO{
-    user?:string,
+    postId?:string,
     token:string 
 }
 
@@ -78,20 +78,20 @@ export class PostsDTO{
 
     public GetPostInputDTO =(
         token:unknown,
-        user?:unknown
+        postId?:unknown
     ): GetPostsInputDTO=>{
         if(typeof token !== 'string'){
             throw new BadRequestError("'token' deve ser uma string")
         }
-        if(user!== undefined){
-            if(typeof user !== 'string'){
+        if(postId!== undefined){
+            if(typeof postId !== 'string'){
                 throw new BadRequestError('user deve ser uma id de um usuario ou undefined')
             }
         }
 
         const dto ={
             token,
-            user
+            postId
         }
         return dto
     }
