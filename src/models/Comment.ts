@@ -48,7 +48,7 @@ export class Comment{
             updated_at:this.updatedAt
         }
     }
-    public toCommentOutput (): CommentsOutputDTO{
+    public toCommentOutput (reaction:boolean | undefined): CommentsOutputDTO{
         return{
             id:this.id,
             postId:this.postId,
@@ -60,7 +60,8 @@ export class Comment{
             creator:{
                 id:this.creator.id,
                 name:this.creator.name
-            }
+            },
+            userReaction:[reaction]
         
         }
     }
