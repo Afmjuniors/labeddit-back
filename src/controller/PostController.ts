@@ -33,30 +33,6 @@ export class PostController{
   
 
     }
-    public getPostsById = async (req:Request, res:Response)=>{
-        try {
-            const input = this.postDTO.GetPostInputDTO(
-                req.headers.authorization,
-                req.query.postId)
-           
-            
-
-            const output = await this.postBusiness.getPosts(input)
-
-            res.status(200).send(output)
-            
-        } catch (error) {
-            console.log(error)
-        
-            if (error instanceof BaseError) {
-                res.status(error.statusCode).send(error.message)
-            } else {
-                res.status(500).send("Erro inesperado")
-            } 
-        }
-  
-
-    }
     public createPost =async (req:Request,res:Response) => {
         try {
             const input = this.postDTO.CreatePostInputDTO(req.body.content,req.headers.authorization)

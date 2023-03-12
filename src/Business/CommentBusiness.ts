@@ -62,8 +62,9 @@ export class CommentBusiness {
             comment_id:postId,
             like:true
         }
-        const reaction = await this.reactionCommentDatabase.findReaction(reactionToFind)
-        const output = this.commentDTO.GetCommentOutputDTO(comments,reaction.like)
+        const reaction: ReactionComment = await this.reactionCommentDatabase.findReaction(reactionToFind)
+       
+        const output = this.commentDTO.GetCommentOutputDTO(comments,reaction?.like)
 
         return output
 
