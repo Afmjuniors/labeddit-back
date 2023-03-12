@@ -14,6 +14,7 @@ export interface CommentsOutputDTO {
         id: string,
         name: string,
     }
+    userReaction:[boolean | undefined]
 
 }
 
@@ -80,8 +81,8 @@ export class CommentsDTO {
         }
         return dto
     }
-    public GetCommentOutputDTO = (comments: Comment[]): CommentsOutputDTO[] => {
-        const dto: CommentsOutputDTO[] = comments.map((comment) => comment.toCommentOutput())
+    public GetCommentOutputDTO = (comments: Comment[], reaction:boolean): CommentsOutputDTO[] => {
+        const dto: CommentsOutputDTO[] = comments.map((comment) => comment.toCommentOutput(reaction))
         return dto
     }
 
@@ -105,7 +106,7 @@ export class CommentsDTO {
     public CreateCommentOutputDTO = (comment: Comment): CreateCommentOutputDTO => {
         const dto: CreateCommentOutputDTO = {
             message: "Comment adicionado com sucesso",
-            comment: comment.toCommentOutput()
+            comment: comment.toCommentOutput(undefined)
         }
         return dto
     }
