@@ -25,6 +25,14 @@ export class ReactionDatabaseMock extends BaseDatabase{
         // return undefined
 
     }
+    public findReactionByUser = async (user_id:string) : Promise<Reaction[] | undefined>=>{
+        return [{
+            user_id,
+            post_id:"id-mock-p1",
+            like:true
+        }
+    ]
+    }
 
     public editReaction =async (reaction:Reaction): Promise<void> => {
 

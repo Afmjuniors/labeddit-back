@@ -33,12 +33,10 @@ describe("Create new Post", ()=>{
                 id:"id-mock",
                 name:"user mock"
             },
-            comments:{
-                count:0,
-                comments:[]
-            },
+            comments:0,
             createdAt:expect.any(String),
-            updatedAt:expect.any(String)
+            updatedAt:expect.any(String),
+            userReaction:[undefined]
         }
         const output  = await  postBusiness.createPost(input)
         expect(output.post).toEqual(outputExpected)

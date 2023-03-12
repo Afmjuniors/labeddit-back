@@ -30,9 +30,10 @@ describe("Create new Post", ()=>{
                   likes: 0,
                   dislikes: 0,
                   creator: { id: 'id-mock', name: 'user mock' },
-                  comments: { count: 0, comments: [] },
+                  comments:0,
                   createdAt: expect.any(String),
-                  updatedAt: expect.any(String)
+                  updatedAt: expect.any(String),
+                  userReaction:[false]
                 },
                 {
                   id: 'id-mock-p2',
@@ -40,27 +41,17 @@ describe("Create new Post", ()=>{
                   likes: 1,
                   dislikes: 0,
                   creator: { id: 'id-mock', name: 'user mock' },
-                  comments: { count: 1, comments:  [
-                    {
-                      id: 'id-mock-c',
-                      postId: 'id-mock-p2',
-                      content: 'Mocked comment',
-                      likes: 1,
-                      dislikes: 0,
-                      createdAt: expect.any(String),
-                      updatedAt: expect.any(String),
-                      creator: { id: 'id-mock', name: 'user mock' }
-                    }
-                  ]
-             },
+                  comments: 1,             
                   createdAt: expect.any(String),
-                  updatedAt: expect.any(String)
+                  updatedAt: expect.any(String),
+                  userReaction:[false]
                 }
               ]
          
         
 
         const output  = await  postBusiness.getPosts(input)
+        console.log(output)
         expect(output).toEqual(outputExpected)
     })
 })
