@@ -35,7 +35,9 @@ describe("Get Comments", ()=>{
             id: "id-mock-c",
             likes: 1, 
             postId: "id-mock-p2",
-            updatedAt: expect.any(String)}
+            updatedAt: expect.any(String),
+            userReaction:[true]
+        }
         const output  = await  commentBusiness.getComments(input)
         expect(output).toContainEqual(expectCommentOutput)
     })

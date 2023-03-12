@@ -36,7 +36,8 @@ describe("Create new Comment", ()=>{
             creator:{
                 id:"id-mock",
                 name:"user mock"
-            }
+            },
+            userReaction:[undefined]
         }
         const output  = await  commentBusiness.createComment(input)
         expect(output.comment).toEqual(outputExpected)
