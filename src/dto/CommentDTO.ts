@@ -81,7 +81,7 @@ export class CommentsDTO {
         }
         return dto
     }
-    public GetCommentOutputDTO = (comments: Comment[], reaction:boolean): CommentsOutputDTO[] => {
+    public GetCommentOutputDTO = (comments: Comment[], reaction:boolean | undefined): CommentsOutputDTO[] => {
         const dto: CommentsOutputDTO[] = comments.map((comment) => comment.toCommentOutput(reaction))
         return dto
     }
