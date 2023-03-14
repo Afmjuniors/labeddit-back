@@ -7,6 +7,7 @@ import {CommentBusiness} from"../../src/Business/CommentBusiness"
 import { CommentsDTO, CreateCommentInputDTO, CommentsOutputDTO, DeleteCommentInputDTO, GetCommentsInputDTO } from "../../src/dto/CommentDTO"
 import { ReactionCommentDatabaseMock } from "../moks/database/ReactionCommentDatabaseMock"
 import { CommentDB } from "../../src/types"
+import { BadRequestError } from "../../src/error/BadRequestError"
 describe("Get Comments", ()=>{
     const commentBusiness  = new CommentBusiness(
            new CommentsDTO(),
@@ -40,5 +41,21 @@ describe("Get Comments", ()=>{
         }
         const output  = await  commentBusiness.getComments(input)
         expect(output).toContainEqual(expectCommentOutput)
+    })
+
+    test("must throw error when token is invalid", async ()=>{
+        const input : GetCommentsInputDTO ={
+            postId:"id-mock-p2",
+            token:"token-mock-error"
+        }
+        expect.assertions(1)
+        try {
+           await  commentBusiness.getComments(input)
+        } catch (error) {
+            if(error instanceof BadRequestError){
+            expect(error.message).toBe("Usuario não logado")
+            }
+        }        
+       
     })
 })

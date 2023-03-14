@@ -6,6 +6,8 @@ import { TokenManagerMock } from "../moks/service/TokenManagerMock"
 import {CommentBusiness} from"../../src/Business/CommentBusiness"
 import { CommentsDTO, CreateCommentInputDTO, CommentsOutputDTO } from "../../src/dto/CommentDTO"
 import { ReactionCommentDatabaseMock } from "../moks/database/ReactionCommentDatabaseMock"
+import { BadRequestError } from "../../src/error/BadRequestError"
+import { NotFoundError } from "../../src/error/NotFoundError"
 describe("Create new Comment", ()=>{
     const commentBusiness  = new CommentBusiness(
            new CommentsDTO(),
@@ -41,5 +43,37 @@ describe("Create new Comment", ()=>{
         }
         const output  = await  commentBusiness.createComment(input)
         expect(output.comment).toEqual(outputExpected)
+    })
+    test("must throw error when token is invalid", async ()=>{
+        const input : CreateCommentInputDTO ={
+            content:"Content mock",
+            postId:"id-mock-p2",
+            token:"token-mock-error"
+        }
+        expect.assertions(1)
+        try {
+           await  commentBusiness.createComment(input)
+        } catch (error) {
+            if(error instanceof BadRequestError){
+            expect(error.message).toBe("Usuario não logado")
+            }
+        }        
+       
+    })
+    test("must throw error when post is not found", async ()=>{
+        const input : CreateCommentInputDTO ={
+            content:"Content mock",
+            postId:"id-mock",
+            token:"token-mock-normal"
+        }
+        expect.assertions(1)
+        try {
+           await  commentBusiness.createComment(input)
+        } catch (error) {
+            if(error instanceof NotFoundError){
+            expect(error.message).toBe("Post não encontrado")
+            }
+        }        
+       
     })
 })
