@@ -261,7 +261,7 @@ export class PostBusiness {
             }
             await this.reactionDatabase.newReaction(reactionDB)
             await this.postDatabase.editPostbyId(post.getId(), toEdit)
-            message = `O usuario deu ${likeStr} no video`
+            message = `O usuario deu ${likeStr} no post`
         }
         return { message }
 

@@ -244,7 +244,7 @@ export class CommentBusiness {
             }
             await this.reactionCommentDatabase.newReaction(reactionDB)
             await this.commentDatabase.editCommentbyId(comment.getId(), toEdit)
-            message = `O usuario deu ${likeStr} no video`
+            message = `O usuario deu ${likeStr} no comment`
         }
         return { message }
 

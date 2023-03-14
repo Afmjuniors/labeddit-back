@@ -21,6 +21,9 @@ export class UserBusiness{
       private hashManager: HashManager
     ){}
 
+    public getAllUsers =async () => {
+        return await this.userDatabase.getAllUsers()
+    }
 
     public createUser = async(input:CreateUserInputDTO ): Promise<CreateUserOutputDTO>=> {
         const {name,email,password} = input
