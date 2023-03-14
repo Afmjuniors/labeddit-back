@@ -6,6 +6,7 @@ import { UserDatabaseMock } from "../moks/database/UserDatabaseMock"
 import { IdGeneratorMock } from "../moks/service/IdGeneretorMock"
 import { TokenManagerMock } from "../moks/service/TokenManagerMock"
 import {PostBusiness} from"../../src/Business/PostBusiness"
+import { BadRequestError } from "../../src/error/BadRequestError"
 describe("Create new Post", ()=>{
     const postBusiness  = new PostBusiness(
            new PostsDTO(),
@@ -26,5 +27,20 @@ describe("Create new Post", ()=>{
 
         const output  = await  postBusiness.deletePost(input)
         expect(output.message).toBe("Post deletado com sucesso")
+    })
+    test("must throw error when token is invalid", async ()=>{
+        const input : DeletePostInputDTO ={
+            id:"id-mock-c",
+            token:"token-mock-error"
+        }
+        expect.assertions(1)
+        try {
+           await  postBusiness.deletePost(input)
+        } catch (error) {
+            if(error instanceof BadRequestError){
+            expect(error.message).toBe("Usuario não logado")
+            }
+        }        
+       
     })
 })

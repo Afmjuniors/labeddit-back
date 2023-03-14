@@ -11,8 +11,9 @@ export class ReactionCommentDatabaseMock extends BaseDatabase{
 
     public findReaction = async (reaction:ReactionComment) : Promise<ReactionComment>=>{
 
+        let returnReaction ={...reaction,like:true}
 
-        return reaction
+        return returnReaction
     }
 
     public editReaction =async (reaction:ReactionComment): Promise<void> => {

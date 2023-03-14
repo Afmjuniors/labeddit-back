@@ -17,10 +17,13 @@ export class ReactionDatabaseMock extends BaseDatabase{
         //     post_id:reaction.post_id,
         //     like:reaction.like
         // }
+        if(reaction.user_id==="id-mock-a"){
+            return undefined
+        }
         return {
             user_id:reaction.user_id,
             post_id:reaction.post_id,
-            like:!reaction.like
+            like:true
         }
         // return undefined
 

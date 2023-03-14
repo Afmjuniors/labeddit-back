@@ -164,16 +164,16 @@ export class UserDTO {
         }
         if (password !== undefined) {
             if (typeof password !== 'string') {
-                throw new BadRequestError("'password' deve ser um string")
+                throw new BadRequestError("'password' deve ser uma string")
             }
         }
         if (role !== undefined) {
             if (role !== Roles.ADMIN && role !== Roles.NORMAL) {
-                throw new BadRequestError("'password' deve ser um string")
+                throw new BadRequestError("'role' deve ser um ADMIN ou NORMAL")
             }
         }
         if (typeof token !== 'string') {
-            throw new BadRequestError("'password' deve ser um string")
+            throw new BadRequestError("'token' deve ser um string")
         }
         const dto = {
             id,

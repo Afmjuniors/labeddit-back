@@ -100,6 +100,7 @@ export class PostsDTO{
         return dto
     }
     
+    
     public CreatePostInputDTO = (
         content:unknown,
         token:unknown

@@ -6,6 +6,7 @@ import { UserDatabaseMock } from "../moks/database/UserDatabaseMock"
 import { IdGeneratorMock } from "../moks/service/IdGeneretorMock"
 import { TokenManagerMock } from "../moks/service/TokenManagerMock"
 import {PostBusiness} from"../../src/Business/PostBusiness"
+import { BadRequestError } from "../../src/error/BadRequestError"
 describe("Create new Post", ()=>{
     const postBusiness  = new PostBusiness(
            new PostsDTO(),
@@ -33,7 +34,7 @@ describe("Create new Post", ()=>{
                   comments:0,
                   createdAt: expect.any(String),
                   updatedAt: expect.any(String),
-                  userReaction:[false]
+                  userReaction:[true]
                 },
                 {
                   id: 'id-mock-p2',
@@ -44,14 +45,28 @@ describe("Create new Post", ()=>{
                   comments: 1,             
                   createdAt: expect.any(String),
                   updatedAt: expect.any(String),
-                  userReaction:[false]
+                  userReaction:[true]
                 }
               ]
          
         
 
         const output  = await  postBusiness.getPosts(input)
-        console.log(output)
         expect(output).toEqual(outputExpected)
     })
+    test("must throw error when token is invalid", async ()=>{
+      const input : GetPostsInputDTO ={
+          postId:"id-mock-p2",
+          token:"token-mock-error"
+      }
+      expect.assertions(1)
+      try {
+         await  postBusiness.getPosts(input)
+      } catch (error) {
+          if(error instanceof BadRequestError){
+          expect(error.message).toBe("Usuario não logado")
+          }
+      }        
+     
+  })
 })
