@@ -1,8 +1,74 @@
 # Labeddit
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li><a href="#diagram">Diagram</a></li>
+    <li><a href="#documentation">Documentation</a></li>
+    <li><a href="#roadmap">RoadMap</a></li>
+    <li>
+      <a href="#methods">Estructure REST</a>
+      <ul>
+        <li><a href="#methods">Methods</a></li>
+        <li><a href="#response">Response</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#frontend-repository">FrontEnd Repository</a></li>    
+    <li>
+      <a href="#exemples-requests">Exemples requests</a>
+      <ul>
+     <details>
+    <summary>Users</summary>
+      <ul>
+        <li><a href="#signup">Signup</a></li>
+        <li><a href="#login">Login</a></li>
+       <li><a href="#delete-user">Delete User</a></li>
+      </ul>
+    </details>
+    <details>
+    <summary>Posts</summary>
+      <ul>
+        <li><a href="#get-posts">Get posts</a></li>
+        <li><a href="#create-new-post">Create new post</a></li>
+       <li><a href="#edit-post">Edit post</a></li>
+       <li><a href="#delete-post">Delete post</a></li>
+       <li><a href="#reaction-post ">Reaction Post </a></li>
+      </ul>
+    </details>
+         <details>
+    <summary>Comments</summary>
+      <ul>
+        <li><a href="#get-comments">Get comments</a></li>
+        <li><a href="#create-new-comment">Create new comment</a></li>
+       <li><a href="#edit-comment">Edit comment</a></li>
+       <li><a href="#delete-comment">Delete comment</a></li>
+       <li><a href="#reaction-comment ">Reaction comment </a></li>
+      </ul>
+    </details>
+      </ul>
+    </li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#acknowledgments">Acknowledgments</a></li>
+  </ol>
+</details>
 
+
+## About the project
 Labeddit is a social network with the goal of connecting and interacting between posts from its users. Anyone who signs up for the app can create, like, and comment on posts.<br/>
 
-## Tecnologies used
+## Built With
 
 - NodeJS
 - Typescript
@@ -18,6 +84,7 @@ Labeddit is a social network with the goal of connecting and interacting between
 - Postman
 
 
+
 # Diagram
 ![projeto-labook (2)](https://user-images.githubusercontent.com/29845719/216036534-2b3dfb48-7782-411a-bffd-36245b78594e.png)
 
@@ -27,24 +94,30 @@ Ducumentation of the API with instrutions on how to use the endpoints avalible f
 
 [Labook API](https://documenter.getpostman.com/view/24460684/2s93CLttsj)
 
-# Road Map
+# RoadMap
 
 - Endpoints
     - Users
-
         - [ ]  Signup
         - [ ]  Login
         - [ ]  Delete user
     - Posts
-        - [ ]
+        - [ ] Get Posts
+        - [ ] Edit Post
+        - [ ] Reaction Post
+        - [ ] Create new Post
+        - [ ] Delete Post
     - Comments
-        - [ ]
+        - [ ] Get Comments of a Post
+        - [ ] Edit Comment
+        - [ ] Reaction Comment
+        - [ ] Create new comment
+        - [ ] Delete Comment
 
 - Authentication and authorization
     - [ ]  UUID
     - [ ]  Hashed passwords with Bcrypt.
     - [ ]  tokens JWT
- 
  - Code
     - [ ]  POO
     - [ ]  Layered architecture
@@ -75,7 +148,7 @@ Requests for the API must follow HTTP RESTful patterns.
 | `500` | Unexpected error.|
 
 
-## Starting 
+## Getting Started 
 
 Here is an example of instructions on how to set up the project locally.
 To have a local copy, follow the steps below:
@@ -170,10 +243,10 @@ To have a local copy, follow the steps below:
 This application is a Fullstack development of a working social media plataform.
 Using a blog format the user can view posts by others users, Like or Dislike them and even comment in a specific post.
 
-## FrontEnd Repository
+## FrontEnd-Repository
 To see repository of this application [Front-end]('https://github.com/Afmjuniors/labeddit-front) 
 
-# Exemplos de requisição
+# Exemples requests
 It isnt necessary to use the email, name, and password in the exemples. However remember to respect th basic struture.
 
 ## Signup
@@ -525,7 +598,7 @@ Only the creator can delete it. ADMIN can delete all posts.
 }
 ```
 
-## Reaction Post 
+## Reaction Comment 
 
 Protected endpoint create a new comment. required a jwt token.<br>
 Case the user had liked the comment and do it again, the reaction will be neutral.<br>
@@ -588,8 +661,8 @@ Alexandre Machado  - afmjuniors@gmail.com
 
 ## Acknowledgments
 
-* As may last project made by the bootcamp Labenu I would like to thanks them
-* Also as the last project by the bootcamp I would like to thanks my colegues form Ammal-A
+* As my last project made by the bootcamp Labenu I would like to thanks them, every single teacher was critical to my learning experience, and the support staff was wornderful.
+* Also as the last project by the bootcamp I would like to thanks my colegues form Ammal-A, they were a very unite commuty and I hope that we continue to do so.
 
 
 
