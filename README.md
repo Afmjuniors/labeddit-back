@@ -86,7 +86,7 @@ Labeddit is a social network with the goal of connecting and interacting between
 
 
 # Diagram
-![projeto-labook (2)](https://user-images.githubusercontent.com/29845719/216036534-2b3dfb48-7782-411a-bffd-36245b78594e.png)
+![projeto-labook (2)]([https://dbdiagram.io/d/63f7e93e296d97641d835a97](https://dbdiagram.io/d/63f7e93e296d97641d835a97))
 
 ## Documentation
 Ducumentation of the API with instrutions on how to use the endpoints avalible for the Labeddit aplication 
