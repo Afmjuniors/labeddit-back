@@ -242,6 +242,7 @@ To have a local copy, follow the steps below:
 
 This application is a Fullstack development of a working social media plataform.
 Using a blog format the user can view posts by others users, Like or Dislike them and even comment in a specific post.
+To see the application online deployed visti the [vercel](https://labeddit-front.vercel.app/)('https://labeddit-front.vercel.app/')
 
 ## FrontEnd-Repository
 To see repository of this application [Front-end]('https://github.com/Afmjuniors/labeddit-front) 
