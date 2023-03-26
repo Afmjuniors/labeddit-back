@@ -12,7 +12,6 @@ export interface UserOutput{
     updatedAt:string
 
 }
-
 export interface UserDB {
     id:string,
     name:string,
