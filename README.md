@@ -86,8 +86,8 @@ Labeddit is a social network with the goal of connecting and interacting between
 
 
 # Diagram
-![projeto-labook (2)](https://user-images.githubusercontent.com/29845719/216036534-2b3dfb48-7782-411a-bffd-36245b78594e.png)
 
+[![Diagram][product-screenshot]][diagram-url]
 ## Documentation
 Ducumentation of the API with instrutions on how to use the endpoints avalible for the Labeddit aplication 
 <br>
@@ -242,6 +242,7 @@ To have a local copy, follow the steps below:
 
 This application is a Fullstack development of a working social media plataform.
 Using a blog format the user can view posts by others users, Like or Dislike them and even comment in a specific post.
+To see the application online deployed visti the [vercel](https://labeddit-front.vercel.app/)('https://labeddit-front.vercel.app/')
 
 ## FrontEnd-Repository
 To see repository of this application [Front-end]('https://github.com/Afmjuniors/labeddit-front) 
@@ -681,7 +682,8 @@ Alexandre Machado  - afmjuniors@gmail.com
 [license-url]: https://github.com/Afmjuniors/labeddit-back/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/afmjuniors
-[product-screenshot]: readme-image/screenshot.gif
+[product-screenshot]: readme-image/Labeddit.png
+[diagram-url]: https://dbdiagram.io/d/63f7e93e296d97641d835a97
 
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
 [Next-url]: https://nextjs.org/
