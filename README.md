@@ -549,7 +549,6 @@ Protected endpoint create a new comment of a post. required a jwt token.
     }
 }
 ```
-
 ## Edit Comment
 Protected endpoint create a post. required a jwt token.<br>
 Only the creator can edit its content
